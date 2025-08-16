@@ -1,38 +1,13 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ichizack's scan Progress</title>
-    <link href="./output.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ichizack's scan Progress</title>
+  <link href="./output.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
 </head>
-
-
-
-<body class="bg-gradient-to-b from-black via-gray-900 to-black " style=" font-family: 'Titillium Web';">
-
-
-<section class="w-full bg-gray-900 py-6 px-4 text-white">
-  <div class="max-w-4xl mx-auto flex flex-wrap justify-center gap-6 sm:gap-12">
-    <a href="#projects" class="relative text-base sm:text-lg font-semibold text-gray-300 transition-all duration-300 hover:text-indigo-500 group">
-      Scan
-      <span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-    </a>
-    <a href="#skills" class="relative text-base sm:text-lg font-semibold text-gray-300 transition-all duration-300 hover:text-indigo-500 group">
-      BD
-      <span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-    </a>
-    <a href="#faq" class="relative text-base sm:text-lg font-semibold text-gray-300 transition-all duration-300 hover:text-indigo-500 group">
-      Liste de Lecture
-      <span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-    </a>
-    <a href="#contact" class="relative text-base sm:text-lg font-semibold text-gray-300 transition-all duration-300 hover:text-indigo-500 group">
-      Editeurs
-      <span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-    </a>
-  </div>
-</section>
+<body class="bg-gradient-to-b from-black via-gray-900 to-black" style="font-family: 'Titillium Web';">
 
 <section class="max-w-5xl mx-auto py-10 px-4">
   <h2 class="text-2xl font-bold text-white mb-6">Mes Lectures / Scans</h2>
@@ -43,24 +18,25 @@
   <!-- Pagination -->
   <div class="flex justify-center mt-8 gap-4">
     <button onclick="goToPage(currentPage-1)" class="px-4 py-2 bg-gray-700 text-white rounded-xl hover:bg-indigo-500 transition-colors duration-300">Previous</button>
-    <button onclick="goToPage(1)" class="px-4 py-2 bg-gray-700 text-white rounded-xl hover:bg-indigo-500 transition-colors duration-300">1</button>
+    <!-- <button onclick="goToPage(1)" class="px-4 py-2 bg-gray-700 text-white rounded-xl hover:bg-indigo-500 transition-colors duration-300">1</button>
     <button onclick="goToPage(2)" class="px-4 py-2 bg-gray-700 text-white rounded-xl hover:bg-indigo-500 transition-colors duration-300">2</button>
+    <button onclick="goToPage(3)" class="px-4 py-2 bg-gray-700 text-white rounded-xl hover:bg-indigo-500 transition-colors duration-300">3</button> -->
     <button onclick="goToPage(currentPage+1)" class="px-4 py-2 bg-gray-700 text-white rounded-xl hover:bg-indigo-500 transition-colors duration-300">Next</button>
   </div>
 </section>
 
-<!-- Modal générique -->
+<!-- Modal -->
 <div id="modalBox" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden">
-  <div class="bg-gray-900 rounded-2xl max-w-xl w-full p-6 relative transform scale-75 opacity-0 transition-all duration-300">
+  <div id="modalContent" class="bg-gray-900 rounded-2xl max-w-xl w-full p-6 relative transform scale-75 opacity-0 transition-all duration-300">
     <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">&times;</button>
     <img id="modalImg" src="" alt="" class="w-full h-64 object-cover rounded-xl mb-4">
     <h2 id="modalTitle" class="text-2xl font-bold text-white mb-4"></h2>
     <p id="modalSummary" class="text-gray-300 mb-2"></p>
     <p id="modalBio" class="text-gray-300 mb-2"></p>
     <p id="modalDetails" class="text-gray-300 mb-2"></p>
-    <p class="text-gray-300 mt-4"><strong>Chapitre actuel :</strong> <span id="modalChap"></span></p>
+    <p class="text-gray-300 mt-4"><strong>Actuel :</strong> <span id="modalChap"></span></p>
   </div>
-</div> 
+</div>
 
 
 <script src="script.js"></script>
