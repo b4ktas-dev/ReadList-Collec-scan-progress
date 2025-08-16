@@ -1,0 +1,188 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ichizack's scan Progress</title>
+    <link href="./output.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
+
+</head>
+<body class="bg-gradient-to-b from-black via-gray-900 to-black " style=" font-family: 'Titillium Web';">
+
+<section class="w-full bg-gray-900 py-6 px-4 text-white">
+  <div class="max-w-4xl mx-auto flex flex-wrap justify-center gap-6 sm:gap-12">
+    <a href="#projects" class="relative text-base sm:text-lg font-semibold text-gray-300 transition-all duration-300 hover:text-indigo-500 group">
+      Scan
+      <span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+    </a>
+    <a href="#skills" class="relative text-base sm:text-lg font-semibold text-gray-300 transition-all duration-300 hover:text-indigo-500 group">
+      BD
+      <span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+    </a>
+    <a href="#faq" class="relative text-base sm:text-lg font-semibold text-gray-300 transition-all duration-300 hover:text-indigo-500 group">
+      Liste de Lecture
+      <span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+    </a>
+    <a href="#contact" class="relative text-base sm:text-lg font-semibold text-gray-300 transition-all duration-300 hover:text-indigo-500 group">
+      Editeurs
+      <span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+    </a>
+  </div>
+</section>
+
+<section class="max-w-5xl mx-auto py-10 px-4">
+  <h2 class="text-2xl font-bold text-white mb-6">Mes Lectures / Scans</h2>
+
+  <!-- Conteneur dynamique des cartes -->
+  <div id="cardsContainer" class="grid grid-cols-2 sm:grid-cols-5 gap-6 mb-6 min-h-[700px]"></div>
+
+  <!-- Pagination -->
+  <div class="flex justify-center mt-8 gap-4">
+    <button onclick="goToPage(currentPage-1)" class="px-4 py-2 bg-gray-700 text-white rounded-xl hover:bg-indigo-500 transition-colors duration-300">Previous</button>
+    <button onclick="goToPage(1)" class="px-4 py-2 bg-gray-700 text-white rounded-xl hover:bg-indigo-500 transition-colors duration-300">1</button>
+    <button onclick="goToPage(2)" class="px-4 py-2 bg-gray-700 text-white rounded-xl hover:bg-indigo-500 transition-colors duration-300">2</button>
+    <button onclick="goToPage(currentPage+1)" class="px-4 py-2 bg-gray-700 text-white rounded-xl hover:bg-indigo-500 transition-colors duration-300">Next</button>
+  </div>
+</section>
+
+<!-- Modal générique -->
+<div id="modalBox" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden">
+  <div class="bg-gray-900 rounded-2xl max-w-xl w-full p-6 relative transform scale-75 opacity-0 transition-all duration-300">
+    <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">&times;</button>
+    <img id="modalImg" src="" alt="" class="w-full h-64 object-cover rounded-xl mb-4">
+    <h2 id="modalTitle" class="text-2xl font-bold text-white mb-4"></h2>
+    <p id="modalSummary" class="text-gray-300 mb-2"></p>
+    <p id="modalBio" class="text-gray-300 mb-2"></p>
+    <p id="modalDetails" class="text-gray-300 mb-2"></p>
+    <p class="text-gray-300 mt-4"><strong>Chapitre actuel :</strong> <span id="modalChap" contenteditable="true"></span></p>
+  </div>
+</div>
+
+<script>
+const allCards = [
+  { title: "One Piece", chap: "12/1157", img: "https://japondemande.com/cdn/shop/files/product_book_manga_op-108.jpg?v=1712885611", summary: "Luffy part à l'aventure pour devenir roi des pirates.", bio: "Manga de Eiichiro Oda depuis 1997.", details: "Genre: Shonen, Aventure. Editeur: Shueisha." },
+  { title: "Bleach", chap: "7/467", img: "https://mangamate.shop/cdn/shop/products/bleach-vol-48-9781421543017_hr.jpg?v=1626992008", summary: "Ichigo devient un Shinigami pour protéger le monde des esprits.", bio: "Manga de Tite Kubo publié de 2001 à 2016.", details: "Genre: Shonen, Action. Editeur: Shueisha." },
+  { title: "Naruto", chap: "23/40", img: "https://bdi.dlpdomain.com/album/9782871299875/couv/M533x666/naruto-t26.jpg", summary: "Naruto rêve de devenir Hokage.", bio: "Manga de Masashi Kishimoto, 1999-2014.", details: "Genre: Shonen, Action. Editeur: Shueisha." },
+  { title: "Tokyo Ghoul", chap: "5/25", img: "https://www.readerswarehouse.co.za/cdn/shop/files/tokyo-ghoul-vol-19781421580364-313751.jpg?v=1714454256", summary: "Ken Kaneki devient un hybride humain-goule.", bio: "Manga de Sui Ishida.", details: "Genre: Seinen, Horreur. Editeur: Shueisha." },
+  { title: "Rurouni Kenshin", chap: "10/35", img: "https://m.media-amazon.com/images/I/61dlhXKyimL._UF1000,1000_QL80_.jpg", summary: "Kenshin vagabond cherche rédemption.", bio: "Manga de Nobuhiro Watsuki.", details: "Genre: Shonen, Action. Editeur: Shueisha." },
+  { title: "Sun Ken Rock", chap: "3/25", img: "https://cdn.cultura.com/cdn-cgi/image/width=830/media/pim/TITELIVE/15_9782350785127_1_75.jpg", summary: "Ken Rock devient un boss de gang.", bio: "Manga de Boichi.", details: "Genre: Seinen, Action. Editeur: Daewon." },
+  { title: "Death Note", chap: "15/50", img: "https://www.universal-comics.com/media/products/159879/159879-0-big.jpg", summary: "Light utilise un cahier mortel pour punir les criminels.", bio: "Manga de Tsugumi Ohba et Takeshi Obata.", details: "Genre: Thriller, Psychologique. Editeur: Shueisha." },
+  { title: "GTO", chap: "8/25", img: "https://m.media-amazon.com/images/I/81VDeAyH1GL._UF1000,1000_QL80_.jpg", summary: "Onizuka, prof déjanté mais génial.", bio: "Manga de Tohru Fujisawa.", details: "Genre: Shonen, Comédie. Editeur: Kodansha." },
+  { title: "Slam Dunk", chap: "0/20", img: "https://bdi.dlpdomain.com/album/9782505076506/couv/M533x666/slam-dunk-star-edition-t1.jpg", summary: "Basket et compétition entre élèves.", bio: "Manga de Takehiko Inoue.", details: "Genre: Shonen, Sport. Editeur: Shueisha." },
+  { title: "Hunter X Hunter", chap: "0/402", img: "https://comicvine.gamespot.com/a/uploads/scale_medium/13/136525/5977324-1.jpg", summary: "Gon part à l'aventure pour retrouver son père.", bio: "Manga de Yoshihiro Togashi.", details: "Genre: Shonen, Aventure. Editeur: Shueisha." },
+  { title: "Dragon Ball", chap: "5/520", img: "https://cdn.cultura.com/cdn-cgi/image/width=830/media/pim/TITELIVE/16_9782723434621_1_75.jpg", summary: "Goku et ses amis protègent la Terre.", bio: "Manga de Akira Toriyama.", details: "Genre: Shonen, Action. Editeur: Shueisha." },
+  { title: "One Punch Man", chap: "10/125", img: "https://static.fnac-static.com/multimedia/PE/Images/FR/NR/74/fe/fe/16711284/1507-1/tsp20250325122732/Fullmetal-Alchemist-Perfect-tome-18.jpg", summary: "Saitama bat tous ses ennemis en un coup.", bio: "Manga de ONE et Yusuke Murata.", details: "Genre: Shonen, Comédie. Editeur: Shueisha." },
+];
+
+const cardsPerPage = 10;
+let currentPage = 1;
+
+function renderCards() {
+  const container = document.getElementById("cardsContainer");
+  container.innerHTML = "";
+  const start = (currentPage - 1) * cardsPerPage;
+  const end = start + cardsPerPage;
+  const pageCards = allCards.slice(start, end);
+
+  pageCards.forEach(card => {
+    // Récupérer chapitre depuis localStorage
+    const chapKey = `chap_${card.title}`;
+    const savedChap = localStorage.getItem(chapKey) || card.chap.split("/")[0];
+    card.chap = savedChap + "/" + card.chap.split("/")[1];
+
+    container.innerHTML += `
+      <div class="flex flex-col items-center cursor-pointer cardItem" data-title="${card.title}">
+        <div class="bg-gray-800 rounded-xl overflow-hidden w-40 h-60 transform transition-transform duration-300 hover:scale-105">
+          <img src="${card.img}" alt="${card.title}" class="w-full h-full object-cover">
+        </div>
+        <h3 class="text-white font-semibold mt-2 text-center">${card.title}</h3>
+        <p class="text-gray-400 text-sm">Chapitre <span contenteditable="true">${card.chap.split("/")[0]}</span>/${card.chap.split("/")[1]}</p>
+      </div>
+    `;
+  });
+
+  // Ajouter listeners inline edit et modal
+  document.querySelectorAll(".cardItem").forEach(cardEl => {
+    const title = cardEl.dataset.title;
+    const span = cardEl.querySelector("span");
+
+    // Sauvegarde auto
+    span.addEventListener("input", e => {
+      let val = e.target.textContent.replace(/\D/g,'') || "0";
+      e.target.textContent = val;
+      const card = allCards.find(c => c.title === title);
+      card.chap = val + "/" + card.chap.split("/")[1];
+      localStorage.setItem(`chap_${title}`, val);
+      if(document.getElementById("modalTitle").textContent === title){
+        document.getElementById("modalChap").textContent = val;
+      }
+    });
+
+    // Modal
+    cardEl.addEventListener("click", e => {
+      if(e.target.tagName === "SPAN") return; // pas sur le span
+      openModal(title);
+    });
+  });
+}
+
+// Pagination
+function goToPage(page) {
+  const maxPage = Math.ceil(allCards.length / cardsPerPage);
+  if(page < 1 || page > maxPage) return;
+  currentPage = page;
+  renderCards();
+}
+
+// --- Modal ---
+const modal = document.getElementById("modalBox");
+const modalContent = modal.querySelector("div");
+const closeModalBtn = document.getElementById("closeModal");
+const modalImg = document.getElementById("modalImg");
+const modalTitle = document.getElementById("modalTitle");
+const modalSummary = document.getElementById("modalSummary");
+const modalBio = document.getElementById("modalBio");
+const modalDetails = document.getElementById("modalDetails");
+const modalChap = document.getElementById("modalChap");
+
+function openModal(title){
+  const card = allCards.find(c => c.title === title);
+  modalImg.src = card.img;
+  modalTitle.textContent = card.title;
+  modalSummary.textContent = "Résumé : " + card.summary;
+  modalBio.textContent = "Bio : " + card.bio;
+  modalDetails.textContent = "Détails : " + card.details;
+  modalChap.textContent = card.chap.split("/")[0];
+  modal.classList.remove("hidden");
+  requestAnimationFrame(()=> {
+    modalContent.classList.remove("scale-75","opacity-0");
+    modalContent.classList.add("scale-100","opacity-100");
+  });
+}
+
+// Sauvegarde auto depuis modal
+modalChap.addEventListener("input", e => {
+  let val = e.target.textContent.replace(/\D/g,'') || "0";
+  e.target.textContent = val;
+  const card = allCards.find(c => c.title === modalTitle.textContent);
+  card.chap = val + "/" + card.chap.split("/")[1];
+  localStorage.setItem(`chap_${card.title}`, val);
+  renderCards();
+});
+
+function closeModal(){
+  modalContent.classList.remove("scale-100","opacity-100");
+  modalContent.classList.add("scale-75","opacity-0");
+  setTimeout(()=> modal.classList.add("hidden"), 300);
+}
+
+closeModalBtn.addEventListener("click", closeModal);
+modal.addEventListener("click", e => { if(e.target === modal) closeModal(); });
+
+// Affichage initial
+renderCards();
+</script>
+
+
+</body>
+</html>
