@@ -7,7 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
 
 </head>
+
+
+
 <body class="bg-gradient-to-b from-black via-gray-900 to-black " style=" font-family: 'Titillium Web';">
+
 
 <section class="w-full bg-gray-900 py-6 px-4 text-white">
   <div class="max-w-4xl mx-auto flex flex-wrap justify-center gap-6 sm:gap-12">
@@ -56,12 +60,12 @@
     <p id="modalDetails" class="text-gray-300 mb-2"></p>
     <p class="text-gray-300 mt-4"><strong>Chapitre actuel :</strong> <span id="modalChap" contenteditable="true"></span></p>
   </div>
-</div>
+</div> 
 
 <script>
 const allCards = [
   { title: "One Piece", chap: "12/1157", img: "https://japondemande.com/cdn/shop/files/product_book_manga_op-108.jpg?v=1712885611", summary: "Luffy part à l'aventure pour devenir roi des pirates.", bio: "Manga de Eiichiro Oda depuis 1997.", details: "Genre: Shonen, Aventure. Editeur: Shueisha." },
-  { title: "Bleach", chap: "7/467", img: "https://mangamate.shop/cdn/shop/products/bleach-vol-48-9781421543017_hr.jpg?v=1626992008", summary: "Ichigo devient un Shinigami pour protéger le monde des esprits.", bio: "Manga de Tite Kubo publié de 2001 à 2016.", details: "Genre: Shonen, Action. Editeur: Shueisha." },
+  { title: "Bleach", chap: "7/686.5", img: "https://mangamate.shop/cdn/shop/products/bleach-vol-48-9781421543017_hr.jpg?v=1626992008", summary: "Ichigo devient un Shinigami pour protéger le monde des esprits.", bio: "Manga de Tite Kubo publié de 2001 à 2016.", details: "Genre: Shonen, Action. Editeur: Shueisha." },
   { title: "Naruto", chap: "23/40", img: "https://bdi.dlpdomain.com/album/9782871299875/couv/M533x666/naruto-t26.jpg", summary: "Naruto rêve de devenir Hokage.", bio: "Manga de Masashi Kishimoto, 1999-2014.", details: "Genre: Shonen, Action. Editeur: Shueisha." },
   { title: "Tokyo Ghoul", chap: "5/25", img: "https://www.readerswarehouse.co.za/cdn/shop/files/tokyo-ghoul-vol-19781421580364-313751.jpg?v=1714454256", summary: "Ken Kaneki devient un hybride humain-goule.", bio: "Manga de Sui Ishida.", details: "Genre: Seinen, Horreur. Editeur: Shueisha." },
   { title: "Rurouni Kenshin", chap: "10/35", img: "https://m.media-amazon.com/images/I/61dlhXKyimL._UF1000,1000_QL80_.jpg", summary: "Kenshin vagabond cherche rédemption.", bio: "Manga de Nobuhiro Watsuki.", details: "Genre: Shonen, Action. Editeur: Shueisha." },
@@ -96,33 +100,15 @@ function renderCards() {
           <img src="${card.img}" alt="${card.title}" class="w-full h-full object-cover">
         </div>
         <h3 class="text-white font-semibold mt-2 text-center">${card.title}</h3>
-        <p class="text-gray-400 text-sm">Chapitre <span contenteditable="true">${card.chap.split("/")[0]}</span>/${card.chap.split("/")[1]}</p>
+        <p class="text-gray-400 text-sm">Chapitre ${card.chap.split("/")[0]}/${card.chap.split("/")[1]}</p>
       </div>
     `;
   });
 
-  // Ajouter listeners inline edit et modal
+  // Ajouter listeners modal uniquement
   document.querySelectorAll(".cardItem").forEach(cardEl => {
     const title = cardEl.dataset.title;
-    const span = cardEl.querySelector("span");
-
-    // Sauvegarde auto
-    span.addEventListener("input", e => {
-      let val = e.target.textContent.replace(/\D/g,'') || "0";
-      e.target.textContent = val;
-      const card = allCards.find(c => c.title === title);
-      card.chap = val + "/" + card.chap.split("/")[1];
-      localStorage.setItem(`chap_${title}`, val);
-      if(document.getElementById("modalTitle").textContent === title){
-        document.getElementById("modalChap").textContent = val;
-      }
-    });
-
-    // Modal
-    cardEl.addEventListener("click", e => {
-      if(e.target.tagName === "SPAN") return; // pas sur le span
-      openModal(title);
-    });
+    cardEl.addEventListener("click", () => openModal(title));
   });
 }
 
@@ -183,6 +169,6 @@ modal.addEventListener("click", e => { if(e.target === modal) closeModal(); });
 renderCards();
 </script>
 
-
+<script src="script.js"></script>
 </body>
 </html>
